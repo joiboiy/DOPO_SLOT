@@ -3,73 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dopo Slot - Demo Slot Game</title>
+<title>Dopo Slot - Simulator</title>
 
 <style>
   body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0d0d0d;
+    background: #0a0a0a;
     color: white;
+    font-family: Arial, sans-serif;
   }
+
   header {
     text-align: center;
     padding: 20px;
-    background: linear-gradient(45deg, #5900ff, #00b3ff);
+    background: linear-gradient(45deg, #7a00ff, #ff0066);
   }
+
   .games {
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
+
   .game-card {
-    background: #1a1a1a;
+    background: #171717;
     padding: 15px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
-    transition: 0.2s;
+    border: 1px solid #333;
+    transition: 0.25s;
   }
   .game-card:hover {
     transform: scale(1.05);
-    background: #262626;
+    background: #242424;
   }
+
   #slotArea {
     margin: 20px auto;
-    background: #111;
-    padding: 20px;
-    width: 300px;
+    background: #101010;
+    padding: 25px;
+    width: 330px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 15px;
     display: none;
+    border: 1px solid #333;
   }
+
   .reels {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
+    margin: 20px 0;
   }
+
   .box {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     background: #222;
-    border-radius: 5px;
+    border-radius: 8px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 30px;
+    align-items: center;
+    font-size: 32px;
+    border: 1px solid #444;
   }
+
   button {
-    margin-top: 15px;
     padding: 10px 20px;
-    border: none;
-    background: #ffae00;
     font-size: 16px;
-    border-radius: 5px;
+    border: none;
+    background: #ffbb00;
+    color: black;
+    border-radius: 6px;
     cursor: pointer;
   }
   button:hover {
-    background: #ffcc33;
+    background: #ffd54d;
   }
 </style>
 
@@ -78,57 +89,57 @@
 
 <header>
   <h1>Dopo Slot</h1>
-  <p>Demo Game Slot - Banyak Pilihan Game</p>
+  <p>Simulator Slot Dengan 20% Peluang Menang</p>
 </header>
 
 <section class="games">
-  <div class="game-card" onclick="openSlot('Gates of Olympus')">Gates of Olympus</div>
-  <div class="game-card" onclick="openSlot('Starlight Princess')">Starlight Princess</div>
-  <div class="game-card" onclick="openSlot('Sweet Bonanza')">Sweet Bonanza</div>
-  <div class="game-card" onclick="openSlot('Wild West Gold')">Wild West Gold</div>
-  <div class="game-card" onclick="openSlot('Pyramid King')">Pyramid King</div>
-  <div class="game-card" onclick="openSlot('Power of Thor')">Power of Thor</div>
-  <div class="game-card" onclick="openSlot('Aztec Gems')">Aztec Gems</div>
-  <div class="game-card" onclick="openSlot('Sugar Rush')">Sugar Rush</div>
+  <div class="game-card" onclick="openSlot('Dragon Fury', ['🐉','🔥','🗡','💠','⚡'])">Dragon Fury</div>
+  <div class="game-card" onclick="openSlot('Shadow Clover', ['🍀','🕸','💀','✨','🌑'])">Shadow Clover</div>
+  <div class="game-card" onclick="openSlot('Mystic Rune', ['❂','🔮','⭐','⚙','🜁'])">Mystic Rune</div>
+  <div class="game-card" onclick="openSlot('Skull Arena', ['💀','🔥','🩸','🗡','⚔'])">Skull Arena</div>
+  <div class="game-card" onclick="openSlot('Blade Storm', ['🗡','⚡','🔥','💠','🌀'])">Blade Storm</div>
+  <div class="game-card" onclick="openSlot('Dark Temple', ['🔱','🜂','🜄','🜁','🜃'])">Dark Temple</div>
 </section>
 
 <div id="slotArea">
   <h2 id="gameTitle"></h2>
+
   <div class="reels">
     <div class="box" id="r1">?</div>
     <div class="box" id="r2">?</div>
     <div class="box" id="r3">?</div>
   </div>
+
   <button onclick="spin()">SPIN</button>
   <p id="resultMsg"></p>
 </div>
 
 <script>
-const symbols = ["🍒","⭐","💎","🔔"];
+let activeSymbols = [];
 
-function openSlot(game){
+function openSlot(name, symbols) {
+  activeSymbols = symbols;
   document.getElementById("slotArea").style.display = "block";
-  document.getElementById("gameTitle").innerText = game + " - Demo";
+  document.getElementById("gameTitle").innerText = name;
   document.getElementById("resultMsg").innerText = "";
 }
 
-function spin(){
-  let r1 = document.getElementById("r1");
-  let r2 = document.getElementById("r2");
-  let r3 = document.getElementById("r3");
+function spin() {
+  const winChance = 0.20; // 20%
 
-  const img1 = symbols[Math.floor(Math.random()*symbols.length)];
+  let win = Math.random() < winChance;
 
-  let same = Math.random() < 0.25;
-  let img2 = same ? img1 : symbols[Math.floor(Math.random()*symbols.length)];
-  let img3 = same ? img1 : symbols[Math.floor(Math.random()*symbols.length)];
+  let r1 = activeSymbols[Math.floor(Math.random() * activeSymbols.length)];
+  let r2 = win ? r1 : activeSymbols[Math.floor(Math.random() * activeSymbols.length)];
+  let r3 = win ? r1 : activeSymbols[Math.floor(Math.random() * activeSymbols.length)];
 
-  r1.innerText = img1;
-  r2.innerText = img2;
-  r3.innerText = img3;
+  document.getElementById("r1").innerText = r1;
+  document.getElementById("r2").innerText = r2;
+  document.getElementById("r3").innerText = r3;
 
-  document.getElementById("resultMsg").innerText =
-    (img1 === img2 && img2 === img3) ? "MENANG!" : "Coba Lagi!";
+  document.getElementById("resultMsg").innerText = win ? 
+    "MENANG! (20% RNG)" : 
+    "Zonk! Coba Lagi.";
 }
 </script>
 
